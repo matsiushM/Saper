@@ -1,0 +1,30 @@
+
+
+.gameTable{
+    width: 550px;
+    height: 550px;
+    margin: auto;
+    border: 10px solid gray;
+    display: grid;
+    grid-template-columns: repeat(8,50px);
+    grid-template-rows: repeat(8,50px);
+}
+
+button{
+    height: 50px;
+    font-size: 24px;
+    /*background: darkgray;*/
+}
+
+.repeatGame{
+    display: grid;
+    margin: 20px;
+    justify-content: center;
+}
+
+.repeatGame-button{
+    background: aliceblue;
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+}
