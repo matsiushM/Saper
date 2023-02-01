@@ -1,13 +1,13 @@
 
 
 .gameTable{
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 500px;
     margin: auto;
     border: 10px solid gray;
     display: grid;
-    grid-template-columns: repeat(8,50px);
-    grid-template-rows: repeat(8,50px);
+    grid-template-columns: repeat(10,50px);
+    grid-template-rows: repeat(10,50px);
 }
 
 button{
