@@ -27,7 +27,8 @@ function startGame(height, width, bombs) {
     table.addEventListener('click', (event) => {
         const index = event.target.className;
         const elem = searchObj(index, gameTable);
-        isOpen(index, gameTable, event);
+        event.target.innerHTML = isOpen(elem, gameTable);
+        event.target.disabled = true;
     });
 
 }
@@ -52,42 +53,36 @@ function getCount(elemX, elemY, gameTable) {
                     count++;
                 }
             }
+
         }
     }
     return count;
 }
 
-function isOpen(index, gameTable, event) {
-    const elemCheck = searchObj(index, gameTable);
-    console.log(index);
-    const elemX = elemCheck.x;
-    const elemY = elemCheck.y
+function isOpen(elem, gameTable) {
 
-    if (event.target.disabled === true) return;
+    const elemX = elem.x;
+    const elemY = elem.y
 
-    event.target.disabled = true;
-
-    if (elemCheck.bomb === true) {
-        event.target.innerHTML = 'X'
-        return;
+    if (elem.bomb === true) {
+        return 'X';
     }
 
     const count = getCount(elemX, elemY, gameTable);
-
-    if (count !== 0) {
-        event.target.innerHTML = `${count}`;
-        return;
-    }
-    for (let x = -1; x <= 1; x++) {
-        for (let y = -1; y <= 1; y++) {
-            const newX = elemX + x;
-            const newY = elemY + y;
-            if (isValid(newX, newY)) {
-                const newIndex = `${newY}` + newX;
-                isOpen(Number(newIndex), gameTable);
-            }
-        }
-    }
+    console.log(gameTable);
+    //if (count !== 0) {
+        return `${count}`;
+    //}
+    // for (let x = -1; x <= 1; x++) {
+    //     for (let y = -1; y <= 1; y++) {
+    //         const newX = elemX + x;
+    //         const newY = elemY + y;
+    //         if (isValid(newX, newY)) {
+    //             const newIndex = `${newY}` + newX;
+    //             isOpen(Number(newIndex), gameTable);
+    //         }
+    //     }
+    // }
 
 }
 
