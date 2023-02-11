@@ -4,9 +4,10 @@ function startGame(height, width, bombs) {
 
     const table = document.querySelector('.gameTable');
     const cells = height * width;
-    const flagCount = [];
+    let flagCount = [];
     const bombsSet  = Array.from({length: bombs}, () => Math.floor(Math.random() * cells));
     const bombsCount = [...new Set(bombsSet)];
+    console.log(bombsCount);
 
     const gameTable = Array.from({length: cells}, (e, index) => {
         return {
@@ -27,22 +28,28 @@ function startGame(height, width, bombs) {
     table.addEventListener('click', (event) => {
         const index = event.target.className;
         const elem = searchObj(index, gameTable);
-       if(isOpen(elem, gameTable) === 'X'){
-            return;
-       };
+        isOpen(elem,gameTable);
     });
-    console.log(bombsCount.sort());
+
+
     table.addEventListener('contextmenu', (event) => {
-        if (flagCount.length < bombsCount.length) {
-            event.target.innerHTML = '🚩';
-            flagCount.push(event.target.className);
-            event.target.disabled = true;
-            event.preventDefault();
-            console.log(flagCount);
-            if(flagCount.sort().join() === bombsCount.sort().join()){
-                alert('ВЫ ВЫИГРАЛИ!!!');
+        if(event.target.disabled === false && event.target.innerHTML !== '🚩') {
+            if (flagCount.length < bombsCount.length) {
+                event.target.innerHTML = '🚩';
+                flagCount.push(event.target.className);
+                event.target.disabled = true;
+                event.preventDefault();
+                if (flagCount.sort().join() === bombsCount.sort().join()) {
+                    alert('ВЫ ВЫИГРАЛИ!!!');
+                }
             }
+        }else if(event.target.innerHTML !== ''){
+            event.target.innerHTML = '';
+            event.target.disabled  = false;
+            console.log(Number(event.target.className));
+            flagCount = flagCount.filter(item => item !== event.target.className);
         }
+
     });
 
 }
