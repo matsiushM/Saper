@@ -5,7 +5,7 @@ function startGame(height, width, bombs) {
     const table = document.querySelector('.gameTable');
     const cells = height * width;
     let flagCount = [];
-    const bombsSet  = Array.from({length: bombs}, () => Math.floor(Math.random() * cells));
+    const bombsSet = Array.from({length: bombs}, () => Math.floor(Math.random() * cells));
     const bombsCount = [...new Set(bombsSet)];
     console.log(bombsCount);
 
@@ -28,25 +28,26 @@ function startGame(height, width, bombs) {
     table.addEventListener('click', (event) => {
         const index = event.target.className;
         const elem = searchObj(index, gameTable);
-        isOpen(elem,gameTable);
+        isOpen(elem, gameTable);
     });
 
 
     table.addEventListener('contextmenu', (event) => {
-        if(event.target.disabled === false && event.target.innerHTML !== '🚩') {
+        if (event.target.disabled === false) {
             if (flagCount.length < bombsCount.length) {
                 event.target.innerHTML = '🚩';
-                flagCount.push(event.target.className);
                 event.target.disabled = true;
                 event.preventDefault();
+                flagCount.push(event.target.className);
+
                 if (flagCount.sort().join() === bombsCount.sort().join()) {
                     alert('ВЫ ВЫИГРАЛИ!!!');
                 }
             }
-        }else if(event.target.innerHTML !== ''){
+
+        } else if(event.target.innerHTML === '🚩'){
             event.target.innerHTML = '';
-            event.target.disabled  = false;
-            console.log(Number(event.target.className));
+            event.target.disabled = false;
             flagCount = flagCount.filter(item => item !== event.target.className);
         }
 
@@ -80,18 +81,29 @@ function getCount(elemX, elemY, gameTable) {
     return count;
 }
 
+function isOpenAll(gameTable) {
+    gameTable.forEach((e) => {
+        if (e.bomb === true) {
+            e.element.innerHTML = '💣';
+            e.element.disabled = true;
+        }else {
+            e.element.innerHTML = ''
+            e.element.disabled = true;
+        }
+    })
+}
+
 function isOpen(elem, gameTable) {
-
-
     const elemX = elem.x;
     const elemY = elem.y;
     let cellsCount = gameTable.length;
     console.log(gameTable);
+
     if (elem.element.disabled === true) return;
     elem.element.disabled = true;
 
     if (elem.bomb === true) {
-        elem.element.innerHTML = 'X';
+        isOpenAll(gameTable);
         alert("Вы проиграли!!!");
         return;
     }
@@ -100,12 +112,26 @@ function isOpen(elem, gameTable) {
 
     if (count !== 0) {
         elem.element.innerHTML = `${count}`;
+        if (count === 1) {
+            elem.element.style.color = 'turquoise';
+        }
+        if (count === 2) {
+            elem.element.style.color = 'green';
+        }
+        if (count === 3) {
+            elem.element.style.color = 'red';
+        }
+        if (count === 4) {
+            elem.element.style.color = 'blue';
+        }
         return;
     }
 
     cellsCount--;
     if (cellsCount <= 15) {
+        isOpenAll(gameTable);
         alert("Вы выиграли!!!");
+        return;
     }
 
     for (let x = -1; x <= 1; x++) {
